@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Language</title>
+
+<!--
+    style 태그 안 CSS 코드
+    color : 속성
+    red : 속성값
+    ':' : 구분자
+
+    <선택자 종류>
+    li -> 태그 선택자 (모든 태그를 가리킴)
+    #select -> id 선택자 (id가 select인 것!)
+    .deactive -> class 선택자
+
+    id는 단 한번만 등장해야 하며 여러번 등장할 경우 class를 통해 grouping을 해야 한다.
+
+    부모 자식의 경우 부모 띄고 자식 (ex) ol li )
+
+    직계 자식을 원할 경우에는 id값 주고 > 사용
+-->
+    <style>
+
+      ol li{
+        color:red;
+        textdecoration:underline;
+      }
+
+      #select{
+        font-size:50px;
+      }
+
+      .deactive{
+        text-decoration: line-through
+      }
+
+      #hey>li{
+        border:5px solid red;
+      }
+
+      ul,ol{
+        background-color: powderblue;
+      }
+
+    </style>
+
+  </head>
+  <body>
+    <ul>
+      <li class="deactive">HTML</li>
+      <li id="select">CSS</li>
+      <li class="deactive">JavaScript</li>
+    </ul>
+    <ol>
+      <li class="deactive">HTML</li>
+      <li id="select">CSS</li>
+        <ol id="hey">
+          <li>1</li>
+          <li>2</li>
+          <li>3</li>
+        </ol>
+      <li class="deactive">JavaScript</li>
+    </ol>
+  </body>
+</html>
