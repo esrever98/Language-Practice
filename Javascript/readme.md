@@ -53,4 +53,27 @@
   + document.getElementById : id 값을 기준으로 객체를 조회하며 성능면에서 가장 우수!
   + document.querySelector(ALL) : CSS 문법 기준으로 찾아옴, ALL 사용시 하나만 가져오는 것이 아니라 다 가져온다
 
+  + 실행 결과가 하나인 경우 HTMLElement 리턴, 복수인 경우 HTMLCollection (유사배열) 리턴
+
+  + HTML 여러 태그들은 각각 HTMLBodyElement, HTMLAnchorElement, HTMLLiElement 등등 여러가지 객체이지만 모두 HTMLElement라는 상위 요소를 공통적으로 상속
+
 * 위보다 쉬운 방법들을 재사용할 수 있도록 정리해놓은 것이 '라이브러리' ( ex) jQuery )
+
+# jquery
+* 기본 문법
+  + $() -> jQuery Function ( 인자로는 CSS Selector 가 들어온다 )
+  + 'li' -> li 태그로 싸인 모든 객체
+  + '.li' -> 클래스 이름이 li인 모든 객체
+  + '#li' -> id 값이 li인 객체
+
+# Element 객체
+* Element( DOM은 XML 등등의 다른 언어도 지원하기 때문에 표준 Element 존재 ) -> HTMLElement -> HTMLLIElement
+
+# Node 객체
+* DOM의 최상위 객체
+* DOM의 모든 객체들은 Node 객체의 기능을 상속받는다.
+
+# Document 객체
+* 문서 전체를 대표하는 객체
+* document.childNodes 를 통해 연관배열로 받으면 [0]: <!Doctype Html>, [1]: <html> ~ </html> 반환
+* 문서에 소속될 수 있는 node나 객체를 생성
