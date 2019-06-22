@@ -1,0 +1,203 @@
+<!DOCTYPE HTML>
+<link href="https://fonts.googleapis.com/css?family=Amatic+SC:700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+<html>
+
+<head>
+    <meta content="text/html; charset=euc-kr">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>HTML5</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <style type="text/css">
+        body {
+            text-align: center;
+            color: #FFF;
+            width: 900px;
+        }
+
+        div#wapper {
+            width: 100%;
+            text-align: left;
+            min-height: 300px;
+            margin: 0 auto;
+        }
+
+        header,
+        footer,
+        nav,
+        aside,
+        section {
+            border: 1px solid #999;
+            margin: 5px;
+            padding: 10px;
+        }
+
+        header {
+            height: 150px;
+            width: 169.5%;
+            border-top-width: 0px;
+            border-left-width: 0px;
+            border-right-width: 0px;
+            border-bottom-width: 1px;
+            border-bottom-color: black;
+            height: 170px;
+            text-align: center;
+        }
+
+        h1 {
+            color: black;
+            font-family: 'Amatic SC', cursive;
+            font-size: 100px;
+        }
+
+        section {
+            float: left;
+            height: 700px;
+            width: 1520px;
+            border-top-width: 0px;
+            border-left-width: 0px;
+            border-right-width: 0px;
+            border-bottom-width: 0px;
+            border-bottom-color: black;
+            margin-top: 50px;
+        }
+
+        nav {
+            float: left;
+            height: 40px;
+            width: 1520px;
+            background-color: #b3d6ff;
+        }
+
+        footer {
+            height: 50px;
+            width: 1520px;
+            position: relative;
+            clear: both;
+        }
+
+        article {
+            width: 80%;
+            margin: 20px;
+        }
+
+        label {
+            color: black;
+        }
+
+        .input-group {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #Register {
+            margin-left: 720px;
+        }
+
+
+        h5 {
+            color: black;
+            margin-left:655px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+    <div id="wapper">
+        <!--헤더시작-->
+        <header>
+            <h1>Incidental Learning</h1>
+        </header>
+
+
+        <!--콘텐츠부분-->
+        <section>
+            <form name="register_form">
+                <div class="input-group col-xs-3">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                    <input id="ID" type="text" class="form-control input-lg" name="ID" placeholder="ID">
+                </div><br/>
+                <div class="input-group col-xs-3">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                    <input id="PW" type="password" class="form-control input-lg" name="pw" placeholder="Password">
+                </div><br/>
+                <div class="input-group">
+                    <div class="radio">
+                        <label><input id = "a" type="radio" name="preference">1살때 먹은 우유 유통기한이 기억납니다</label>
+                    </div>
+                    <div class="radio">
+                        <label><input id = "b" type="radio" name="preference">평균입니다</label>
+                    </div>
+                    <div class="radio">
+                        <label><input id = "c" type="radio" name="preference">지금 여기 왜 있는지 까먹었습니다</label>
+                    </div>
+                </div>
+                <button class="btn btn-default" id="Register">Register</button>
+
+            </form>
+            <h5>이미 계정이 있으십니까?  <a href=""> 로그인</a></h5>
+        </section>
+        <!--풋터-->
+        <footer>footer</footer>
+    </div>
+
+    <script>
+        const regiBtn = document.querySelector('#Register');
+
+        regiBtn.addEventListener('click', register);
+
+        function register() {
+
+            let ID = document.querySelector('#ID').value;
+
+            let PW = document.querySelector('#PW').value;
+
+            let MEMORY = $radioChecked.attr('id') - 96;
+
+            const data = {
+
+                id: ID,
+
+                pw: PW,
+
+                mem_power = MEMORY,
+
+            };
+
+            const httpRequest = new XMLHttpRequest();
+
+            httpRequest.onreadystatechange = function() {
+
+                if (httpRequest.readyState === XMLHttpRequest.DONE) {
+
+                    alert(httpRequest.responseText);
+
+                }
+
+            };
+
+
+            httpRequest.open('POST', 'http://49.247.131.57:30704/auth/register', true);
+
+            httpRequest.setRequestHeader('Content-Type', 'application/json');
+
+            httpRequest.send(JSON.stringify(data));
+
+
+
+            document.querySelector('#ID').value = '';
+
+            document.querySelector('#PW').value = '';
+
+            $radioChecked.attr('id').prop('checked', false);
+
+        }
+    </script>
+
+</body>
+
+</html>
