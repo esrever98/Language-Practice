@@ -37,6 +37,7 @@
             animation-name: beat;
             animation-duration: 1s;
             animation-iteration-count: infinite;
+            margin-bottom: 383px;
         }
         
         .heart:after {
@@ -76,19 +77,32 @@
             }
         }
         
-        form {
-            margin-top: 30px;
+        #Login {
+            position: relative;
+            z-index: 3;
+            margin-left: 370px;
         }
         
-        .heart {
-            margin-bottom: 440px;
+        #Logout {
+            position: relative;
+            z-index: 3;
+            margin-left: 0px;
+        }
+        
+        #Register {
+            position: relative;
+            z-index: 3;
+            margin-left: 0px;
         }
         
         .main {
             text-align: center;
             font-size: 150px;
-            padding-top: 200px;
+            padding-top: 100px;
+            margin-bottom: 100px;
             font-family: 'Amatic SC', cursive;
+            position: relative;
+            z-index: 6;
         }
         
         .input-group {
@@ -97,7 +111,7 @@
         }
         
         #Login {
-            margin-left: 652px;
+            margin-left: 695px;
             margin-right: 10px;
         }
         
@@ -110,26 +124,31 @@
 
 <body>
 
-    <!--<div background class="back"></div>
-  <div background class="heart"></div>-->
+    <div class="back"></div>
+    <div class="heart"></div>
+    <div class="input-group col-xs-3">
+        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+        <input id="ID" type="text" class="form-control" name="ID" placeholder="ID">
+    </div>
+    <div class="input-group col-xs-3">
+        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+        <input id="PW" type="password" class="form-control" name="pw" placeholder="Password">
+    </div>
+    <button class="btn btn-default" id="Login">Login</button>
+    <button class="btn btn-default" id="Register">Register</button>
 
 
-
-    <form name="login_form">
-        <div class="input-group col-xs-3">
-            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-            <input id="ID" type="text" class="form-control" name="ID" placeholder="ID">
-        </div>
-        <div class="input-group col-xs-3">
-            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-            <input id="PW" type="password" class="form-control" name="pw" placeholder="Password">
-        </div>
-        <button class="btn btn-default" id="Login">Login</button>
-        <button class="btn btn-default" id="Register">Register</button>
-        <button class="btn btn-default" id="Logout">Logout</button>
-    </form>
 
     <script>
+        function setCookie(value, days) {
+            var exdate = new Date();
+            exdate.setDate(exdate.getDate() + days);
+            // 설정 일수만큼 현재시간에 만료값으로 지정
+
+            var cookie_value = escape(value) + ((days == null) ? '' : '; expires=' + exdate.toUTCString());
+            document.cookie = 'jot' + '=' + cookie_value;
+        }
+
         const loginBtn = document.querySelector('#Login');
 
         const regiBtn = document.querySelector('#Register');
@@ -145,46 +164,12 @@
 
         function register() {
 
-            let ID = document.querySelector('#ID').value;
-
-            let PW = document.querySelector('#PW').value;
-
-            const data = {
-
-                id: ID,
-
-                password: PW,
-
-            };
-
-            const httpRequest = new XMLHttpRequest();
-
-            httpRequest.onreadystatechange = function() {
-
-                if (httpRequest.readyState === XMLHttpRequest.DONE) {
-
-                    console.log(httpRequest.responseText);
-
-                }
-
-            };
-
-
-            httpRequest.open('POST', 'http://49.247.131.57:30704/auth/register', true);
-
-            httpRequest.setRequestHeader('content-type', 'application/json');
-
-            httpRequest.send(JSON.stringify(data));
-
-
-
-            document.querySelector('#ID').value = '';
-
-            document.querySelector('#PW').value = '';
+            window.location.href = '/register.html';
 
         }
 
         function login() {
+
 
             let ID = document.querySelector('#ID').value;
 
@@ -197,12 +182,17 @@
             };
 
             var httpRequest = new XMLHttpRequest();
-
+            httpRequest.responseType = 'json';
             httpRequest.onreadystatechange = function() {
 
                 if (httpRequest.readyState === XMLHttpRequest.DONE) {
-                    console.log('end');
-                    console.log(httpRequest.responseText);
+                    if (httpRequest.response.jwtToken) {
+                        setCookie(httpRequest.response.jwtToken, '1');
+                        window.location.href = '/mainPage.html';
+                    } else {
+                        alert('아이디 혹은 비밀번호가 잘못되었습니다!');
+                        window.location.href = '/Login.html';
+                    }
                 }
             };
 
@@ -216,7 +206,11 @@
         }
 
         function logout() {
+            var deleteCookie = function(name) {
+                document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+            }
 
+            deteCookie('jot');
             const httpRequest = new XMLHttpRequest();
 
             httpRequest.onreadystatechange = function() {
@@ -228,7 +222,7 @@
             };
 
             httpRequest.open('get', 'https://49.247.131.57:30704/auth/login', true);
-            httpRequest.setRequestHeader('Content-Type', 'application/json');
+            httpRequest.setRequestHeadleer('Content-Type', 'application/json');
             httpRequest.send();
 
         }

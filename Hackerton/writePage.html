@@ -141,31 +141,6 @@
             color: pink;
         }
         
-        section {
-            float: left;
-            height: 700px;
-            width: 1520px;
-            border-top-width: 0px;
-            border-left-width: 0px;
-            border-right-width: 0px;
-            border-bottom-width: 0px;
-            border-bottom-color: black;
-            margin-top: 50px;
-        }
-        
-        label {
-            color: black;
-        }
-        
-        .input-group {
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        #Register {
-            margin-left: 720px;
-        }
-        
         .slideanim {
             visibility: hidden;
         }
@@ -176,11 +151,6 @@
             animation-duration: 1s;
             -webkit-animation-duration: 1s;
             visibility: visible;
-        }
-        
-        h5 {
-            color: black;
-            margin-left: 655px;
         }
         
         #GO1 {
@@ -250,8 +220,8 @@
             }
         }
         
-        #mainofmain {
-            font-size: 150px;
+        a {
+            color: white;
         }
     </style>
 </head>
@@ -268,39 +238,49 @@
                 </button>
 
 
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#mainofmain">MAIN</a></li>
+                        <li><a href="#services">SERVICE</a></li>
+                    </ul>
+                </div>
             </div>
     </nav>
 
     <div id="mainofmain" class="jumbotron text-center">
-        <h1>INCIDENTAL LEARNING</h1>
+        <h1><a href="/mainPage.html">INCIDENTAL LEARNING</a></h1>
+        <p>You can memorize anything!</p>
+
     </div>
 
-
-    <section>
-
-        <div class="input-group col-xs-3">
-            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-            <input id="ID" type="text" class="form-control input-lg" name="ID" placeholder="ID">
-        </div><br />
-        <div class="input-group col-xs-3">
-            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-            <input id="PW" type="password" class="form-control input-lg" name="pw" placeholder="Password">
-        </div><br />
-        <div class="input-group">
-            <div class="radio">
-                <label><input id="a" type="radio" name="preference">지금 여기 왜 있는지 까먹었습니다</label>
-            </div>
-            <div class="radio">
-                <label><input id="b" type="radio" name="preference">평균입니다</label>
-            </div>
-            <div class="radio">
-                <label><input id="c" type="radio" name="preference">1살때 먹은 우유 유통기한이 기억납니다</label>
-            </div>
+    <!-- Container (Services Section) -->
+    <div id="services" class="container-fluid">
+        <div class="text-center">
+            <h2>MEMO</h2>
+            <h4>Write anything you want to remember</h4>
         </div>
-        <button class="btn btn-default" id="Register">Register</button>
+        <br>
+        <div class="form-group">
+            <label for="usr">Title:</label>
+            <input type="text" class="form-control" id="TITLE">
+        </div>
+        <div class="form-group">
+            <label for="pwd">Link:</label>
+            <input type="text" class="form-control" id="LINK" placeholder="http://www.xxx.com..">
+        </div>
+        <div class="form-group">
+            <label for="comment">Content:</label>
+            <textarea class="form-control" rows="5" id="CONTENT"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="pwd">Categories:</label>
+            <input type="text" class="form-control" id="CATEGORY">
+        </div>
 
-        <h5>이미 계정이 있으십니까? <a href="/Login.html"> 로그인</a></h5>
-    </section>
+        <button class="btn btn-default btn-lg" id="POST"> POST </button>
+
+    </div>
+
 
 
     <footer class="container-fluid text-center">
@@ -336,58 +316,77 @@
             });
         })
 
-        const regiBtn = document.querySelector('#Register');
+        var getCookie = function() {
+            var value = document.cookie.match('(^|;) ?' + 'jot' + '=([^;]*)(;|$)');
+            return value ? value[2] : null;
+        };
 
-        regiBtn.addEventListener('click', register);
 
-        function register() {
-
-
-            let ID = document.querySelector('#ID').value;
-
-            let PW = document.querySelector('#PW').value;
-
-            let MEMORY = document.getElementsByName('preference');
-            let memPower;
-
-            if (MEMORY[0].checked) {
-                memPower = 1 / 4;
-            }
-            if (MEMORY[1].checked) {
-                memPower = 1 / 2;
-            }
-            if (MEMORY[2].checked) {
-                memPower = 2;
-            }
+        function getUserInfo(callback) { // id 알려주는 함수
 
             const data = {
-                id: ID,
-                pw: PW,
-                mem_power: memPower,
+                Authorization: getCookie(),
             };
+
+            const httpRequest = new XMLHttpRequest();
+            httpRequest.responseType = 'json';
+            httpRequest.onreadystatechange = function() {
+                if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                    callback(httpRequest.response.id);
+                }
+            };
+            httpRequest.open('GET', 'http://49.247.131.57:30704/Users/userInfo', true);
+            httpRequest.setRequestHeader('Content-Type', 'application/json');
+            httpRequest.setRequestHeader('Authorization', getCookie());
+            httpRequest.send(JSON.stringify(data));
+        }
+
+
+        const postBtn = document.querySelector('#POST');
+
+        postBtn.addEventListener('click', post);
+
+        function post() {
+
+
+            let TITLE = document.querySelector('#TITLE').value;
+
+            let LINK = document.querySelector('#LINK').value;
+            let CONTENT = document.querySelector('#CONTENT').value;
+            let CATEGORY = document.querySelector('#CATEGORY').value;
+
+
+            const data = {
+                title: TITLE,
+                link: LINK,
+                content: CONTENT,
+                category: CATEGORY,
+            };
+
             const httpRequest = new XMLHttpRequest();
             httpRequest.responseType = 'json';
             httpRequest.onreadystatechange = function() {
                 if (httpRequest.readyState === XMLHttpRequest.DONE) {
                     if (httpRequest.response.success === true) {
-                        window.location.href = '/Login.html';
+                        window.location.href = "/mainPage.html";
                     } else {
-                        alert('잘못된 아이디, 비밀번호입니다.');
-                        window.location.href = '/Login.html';
+                        alert('글 작성 과정에서 오류가 발생하였습니다. 다시 시도해 주세요');
+                        window.location.href = "/mainPage.html";
                     }
                 }
             };
-            httpRequest.open('POST', 'http://49.247.131.57:30704/auth/register', true);
-            httpRequest.setRequestHeader('Content-Type', 'application/json');
-            httpRequest.send(JSON.stringify(data));
-            document.querySelector('#ID').value = '';
-            document.querySelector('#PW').value = '';
-            for (let i = 0; i <
-                MEMORY.length; i++) {
-                if (MEMORY[i].checked) {
-                    MEMORY[i].checked = false;
-                }
-            }
+            getUserInfo((user_id) => {
+                httpRequest.open('POST', 'http://49.247.131.57:30704/Users/' + user_id + '/records', true);
+                httpRequest.setRequestHeader('Content-Type', 'application/json');
+                httpRequest.setRequestHeader('Authorization', getCookie());
+                httpRequest.send(JSON.stringify(data));
+                document.querySelector('#TITLE').value = '';
+                document.querySelector('#LINK').value = '';
+                document.querySelector('#CONTENT').value = '';
+                document.querySelector('#CATEGORY').value = '';
+
+            });
+
         }
     </script>
 
